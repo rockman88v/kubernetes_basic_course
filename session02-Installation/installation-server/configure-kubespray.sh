@@ -7,7 +7,7 @@ cd ~
 mkdir kubernetes_installation/
 
 #install & configure docker on installation server
-sudo yum update
+sudo yum update -y
 curl -fsSL https://get.docker.com/ | sh
 sudo usermod -aG docker sysadmin
 
@@ -21,14 +21,15 @@ cd /home/sysadmin/kubernetes_installation/kubespray/
 cd inventory/viettq-cluster
 
 #This must be done manually
-vi host.yaml
+#vi host.yaml
 
 #Change network CNI plugin to flannel
 cd /home/sysadmin/kubernetes_installation/kubespray/
 sed -i "/kube_network_plugin:/c\kube_network_plugin: flannel" inventory/viettq-cluster/group_vars/k8s_cluster/k8s-cluster.yml
 
-docker run --rm -it --mount type=bind,source=/home/sysadmin/kubernetes_installation/kubespray/inventory/viettq-cluster,dst=/inventory \
+#Run this command to create kubespray container and exec into it
+#docker run --rm -it --mount type=bind,source=/home/sysadmin/kubernetes_installation/kubespray/inventory/viettq-cluster,dst=/inventory \
 quay.io/kubespray/kubespray:v2.16.0 bash 
 
 #run this command inside to newly created container above
-ansible-playbook -i /inventory/hosts.yaml cluster.yml --user=sysadmin --ask-pass --become --ask-become-pass
+#ansible-playbook -i /inventory/hosts.yaml cluster.yml --user=sysadmin --ask-pass --become --ask-become-pass

@@ -1,0 +1,29 @@
+#!/bin/bash
+
+kubectl run pod-curl --image=busybox --dry-run=client -oyaml -- /bin/sh -c 'sleep 100' > curl-pod.yaml
+
+
+#Task1: Create a new pod named "curly" with following information and check if it is running
+kubectl run -it curly --image=curlimages/curl  -- sh
+
+#Task 2: Check the curly pod status
+#Task 3: Delete the curly pod and verify the status
+#Task 4: Create curly pod again but add more two labels: app=curl and apptype=tool. Verify the labels are set to pod
+kubectl run -it curly --image=curlimages/curl  -- sh
+
+
+#Task 5: Create the pod named "nginx-pod" with image "nginxlatest" by using dry-run to get yaml file and apply to k8s
+#Check the pod status --> It should be "ErrImagePull"
+#Edit Pod "nginx-pod" to change the image from "nginx-latest" to "nginx" --> Verify the status (should be running)
+
+#Task 6: Find IP of Pod "nginx-pod"
+#From any node try this command: curl http:<nginx-pod-ip>:80 and verify the result
+#Attach to curly pod and try this command: curl http:<nginx-pod-ip>:80 and verify the result
+kubectl attach curly6  -i -t
+curl http://10.42.0.27:80
+
+#Task 7: Create a new Pod named "nginx-multi" with 2 containers.
+#First Container: named "nginx", image=nginx, port=80 
+#Second Container: named "curl", image=curlimages/curl
+#With 2 labels: app=nginx apptype=webapp
+

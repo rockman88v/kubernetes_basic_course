@@ -1,0 +1,39 @@
+#List deployment
+kubectl get deployments.apps [-n namespace]
+kubectl get deployments.apps -n demo
+
+#get deployment info
+kubectl get deployments.apps [deployment] -oyaml [-n namespace]
+kubectl get deployments.apps node-app-deployment -oyaml -n demo
+
+kubectl describe deployments [deployment] [-n namespace]
+kubectl describe deployments node-app-deployment  -n demo 
+
+#update deployment
+kubectl set image deployment [deployment] [container]=[image:tag] [-n namespace]
+kubectl set image deployment node-app-deployment node-app=myapp:v2.0 -n demo
+
+#rollout history of deployment
+kubectl rollout history deployment [deployment] [-n namespace]
+kubectl rollout history deployments node-app-deployment  -n demo 
+
+#rollback a deployment using set image
+kubectl set image deployment [deployment] [container]=[image:tag] [-n namespace]
+kubectl -n demo set image deployment node-app-deployment node-app=harbor.prod.viettq.com/demo/myapp:v2.0  -n demo
+
+#rollback a deployment using deployment history
+kubectl rollout history deployment [deployment] [-n namespace] --revision=[number]
+kubectl rollout history deployment/node-app-deployment --revision=1
+kubectl rollout undo deployment/node-app-deployment --to-revision=1 -n demo
+
+#verify deployment status
+kubectl rollout status deployment [deployment] [-n namespace]
+kubectl rollout status deployment node-app-deployment -n demo
+
+#restart deployment
+kubect rollout restart deployment  [deployment] [-n namespace]
+kubect rollout restart deployment node-app-deployment -n demo
+
+#scale deployment
+kubectl scale deployment  [deployment] --replicas=[number]  [-n namespace]
+kubectl scale deployment node-app-deployment --replicas=10 -n demo

@@ -1,0 +1,13 @@
+apiVersion: v1 
+kind: Service 
+metadata:
+  name: service-nodeport
+spec:   
+  type: NodePort           #Loại service: NodePort
+  selector:                #Khai báo rule để lọc các Pod mà service sẽ forward connection tới
+    app: my-app
+    apptype: frontend
+  ports: 
+    - targetPort: 80       #Là port của Pod, service sẽ chuyển tiếp kết nối vào đây
+      port: 80             #Là port được mở của Service. Client sẽ kết nối với Service qua port
+      nodePort: 30888      #Port được mở trên tất cả các node để nhận request cho service

@@ -1,0 +1,44 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-sample2
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: nginx-deployment
+  template:
+    metadata:
+      labels:
+        name: nginx-deployment
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx
+        ports:
+        - containerPort:  80
+          name:  http    
+        
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-sample3
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: busybox-deployment
+  template:
+    metadata:
+      labels:
+        name: busybox-deployment
+    spec:
+      containers:
+      - name: busybox-container
+        image: busybox
+        command:
+        - sh
+        - "-c"
+        - echo Hello Kubernetes! && sleep 3600        

@@ -1,0 +1,11 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-delete
+spec:
+  storageClassName: viettq-nfs-delete
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Mi

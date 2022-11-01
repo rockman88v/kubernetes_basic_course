@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: viettq-pod
+spec:
+  volumes:
+    - name: viettq-volume
+      persistentVolumeClaim:
+        claimName: viettq-pvc
+  containers:
+    - name: viettq-container
+      image: nginx
+      ports:
+        - containerPort: 80
+          name: "http-server"
+      volumeMounts:
+        - mountPath: "/usr/share/nginx/html"
+          name: viettq-volume

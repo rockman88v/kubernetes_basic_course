@@ -1,0 +1,11 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-retain
+spec:
+  storageClassName: viettq-nfs-retain
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Mi

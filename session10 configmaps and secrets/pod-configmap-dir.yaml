@@ -1,0 +1,23 @@
+#Pod using config file from configmap
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cm-as-dir
+spec:
+  containers:
+  - name: env-print-demo
+    image: busybox
+    command: ["sh","-c","sleep 365d"]    
+    volumeMounts:
+    - name: configmap-volume
+      mountPath: "/app/config"
+      readOnly: true
+  volumes:
+      - name: configmap-volume
+        configMap:
+          name: cm-from-dir
+          items:
+          - key: "login-policy.conf"
+            path: "login-policy.conf"
+          - key: "password-policy.conf"
+            path: "password-policy.conf"  

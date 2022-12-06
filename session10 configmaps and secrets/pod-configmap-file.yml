@@ -1,0 +1,21 @@
+#Pod using config file from configmap
+apiVersion: v1
+kind: Pod
+metadata:
+  name: print-configmap-file
+spec:
+  containers:
+  - name: env-print-demo
+    image: busybox
+    command: ["sh","-c","sleep 365d"]    
+    volumeMounts:
+    - name: config-volume
+      mountPath: "/app/config"
+      readOnly: true
+  volumes:
+      - name: config-volume
+        configMap:
+          name: myapp-config
+          items:
+          - key: "introduction.txt"
+            path: "introduction.txt"

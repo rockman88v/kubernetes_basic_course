@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:  
+  labels:
+    app: dp-pod-antiaffinity
+  name: dp-pod-antiaffinity
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: demo-pod-antiaffinity
+  strategy: {}
+  template:
+    metadata:      
+      labels:
+        app: demo-pod-antiaffinity
+    spec:
+      containers:
+      - image: nginx
+        imagePullPolicy: IfNotPresent
+        name: nginx
+        resources: {}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: "app"
+                  operator: In
+                  values:
+                    - "db"        
+              topologyKey: kubernetes.io/hostname
+status: {}

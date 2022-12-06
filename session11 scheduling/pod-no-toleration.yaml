@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: pod-no-toleration
+  name: pod-no-toleration
+spec:
+  containers:
+  - image: nginx
+    name: pod-no-toleration
+    resources: {}
+  nodeName: viettq-worker1  
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

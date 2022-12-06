@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: print-configmap-new
+spec:
+  containers:
+  - name: env-print-demo
+    image: busybox
+    env:
+    - name: APPNAME
+      valueFrom:
+        configMapKeyRef:
+          name: myapp-config
+          key: app_name
+    - name: WELCOMETEXT
+      valueFrom:
+        configMapKeyRef:
+          name: myapp-config
+          key: welcome_text
+    command: ["sh","-c","echo appname=$(APPNAME) welcome=$(WELCOMETEXT);sleep 365d"]
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cm-as-env
+spec:
+  containers:
+  - name: env-print-demo
+    image: busybox
+    env:
+    - name: AUTHOR
+      valueFrom:
+        configMapKeyRef:
+          name: cm-from-literal
+          key: author
+    - name: AGE
+      valueFrom:
+        configMapKeyRef:
+          name: cm-from-literal
+          key: age
+    command: ["sh","-c","echo author=$(AUTHOR) welcome=$(AGE);sleep 365d"]
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cm-file-as-env
+spec:
+  containers:
+    - name: configmap-example-busybox
+      image: k8s.gcr.io/busybox
+      command: [ "/bin/sh", "-c", "env" ]
+      envFrom:
+        # Load the Complete ConfigMap
+        - configMapRef:
+            name: tv
+  restartPolicy: Never        

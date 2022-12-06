@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:  
+  labels:
+    app: dp-all-node
+  name: dp-all-node
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dp-all-node
+  strategy: {}
+  template:
+    metadata:      
+      labels:
+        app: dp-all-node
+    spec:
+      containers:
+      - image: nginx
+        imagePullPolicy: IfNotPresent
+        name: nginx
+        resources: {}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: "app"
+                  operator: In
+                  values:
+                    - "dp-all-node"        
+              topologyKey: kubernetes.io/hostname
+status: {}

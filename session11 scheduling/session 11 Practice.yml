@@ -1,0 +1,78 @@
+#Scheduling practice
+
+#Lab1: Node Selector
+#Require at least 2 worker node: node1, node2
+#label your node:
+kubectl label node node1 size=small
+kubectl label node node2 size=medium
+kubectl label node node3 size=large
+
+kubectl label node node1 disktype=ssd
+kubectl label node node2 disktype=ssd
+kubectl label node node3 disktype=hdd
+
+#Create a pod "my-nginx" using image "nginx" and schedule that pod on node which have label "disktype=ssd"
+#hint: pod-node-selector.yaml
+
+
+#Create a deployment "my-deployment" using image "nginx" with 2 replicas and shedule its pods on node which have label "disktype=ssd". 
+#The Pods in the deployment should have label "app=be"
+#hint: deployment-node-selector.yaml
+#Check where are the pods scheduled?
+#Scale the deployment to 10 replicas and check where are the pod scheduled?
+kubectl scale deployment my-deployment --replicas 10
+
+
+#LAB2: Taint and toleration
+#prerequisite: Delete all pods/deployments from previous lab 
+#Taint for node1
+kubectl taint node node1 app=special:NoSchedule
+#Task1
+#Create a Pod "pod-no-toleration" with image "nginx" and schedule that pod on node1
+#hint: pod-no-toleration.yaml
+
+#Task2
+#Create a Pod "pod-no-toleration" with image "nginx" and add toleration to make sure it is scheduled on node1
+#hint pod-with-toleration.yaml
+
+
+#LAB3: Node Affinity
+#prerequisite: Delete all pods/deployments from previous lab 
+#label your node if not exists:
+kubectl label node node1 size=small
+kubectl label node node2 size=medium
+kubectl label node node3 size=large
+
+kubectl label node node1 disktype=ssd
+kubectl label node node2 disktype=ssd
+kubectl label node node3 disktype=hdd
+
+#Task1
+#Create a deployment named "lab3-node-affinity" with image "nginx" and replicas=4 
+#Using label/selector with app=demo-affinity
+#Make sure theses Pod do not run on nodes which have label "size=small"
+#NOTE: untaint all worker node if taint exists
+#kubectl taint node node1 app=special:NoSchedule-
+#hint: deployment-node-affinity.yaml
+
+#LAB4 PodAffinity/PodAntiAffinity
+#prerequisite: Delete all pods/deployments from previous lab 
+#Task1 PodAffinity
+#create a Pod with label "app=db" on node1 - pod-db-node1.yaml
+#create a deployment named "dp-pod-affinity" using image "nginx" with replicas=5 using label/selector "app=demo-pod-affinity"
+#make sure its pods only run on node which have existing Pod with label "app=db" 
+#hint: deployment-pod-affinity.yml
+
+#Task2
+#Delete Pod/deployment from previous lab
+#create a Pod with label "app=db" on node1 - pod-db-node1.yaml
+#create a deployment named "dp-pod-antiaffinity" using image "nginx" with replicas=5 using label/selector "app=demo-pod-antiaffinity"
+#make sure its pods only run on node which DO NOT have existing Pod with label "app=db" 
+#hint: deployment-pod-antiaffinity.yml
+#scale replicas=10 and verify where the pods are scheduled
+
+#Task3
+#Delete all Pods/deployments from previous lab
+#create a deployment named "dp-pod-antiaffinity-new" using image "nginx" and make sure each node has exactly 1 Pod from this deployment
+#hint deployment-all-node.yaml
+

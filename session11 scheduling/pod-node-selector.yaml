@@ -7,9 +7,7 @@ metadata:
   name: my-nginx
 spec:
   containers:
-  - args:
-    - client
-    image: nginx
+  - image: nginx
     imagePullPolicy: IfNotPresent
     name: nginx
     resources: {}
